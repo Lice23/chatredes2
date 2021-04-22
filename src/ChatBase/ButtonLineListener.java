@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 

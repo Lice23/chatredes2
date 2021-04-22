@@ -6,6 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Para executar, é necessário adicionar as seguintes opções de VM:
+ * --module-path "caminho/para/javafxsdk" --add-modules javafx.controls,javafx.fxml
+ * */
 public class ClientWindowLauncher extends Application {
     public static void main(String[] args) {
         launch(args);
