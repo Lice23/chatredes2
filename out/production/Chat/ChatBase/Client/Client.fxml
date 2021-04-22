@@ -7,13 +7,14 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="ChatBase.ClientWindowController">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ChatBase.Client.ClientWindowController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -24,7 +25,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.rowIndex="2">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
          <children>
             <TextArea fx:id="chatTextArea" disable="true" onKeyPressed="#checkForSend" prefHeight="200.0" prefWidth="200.0" promptText="Escreva sua mensagem aqui..." HBox.hgrow="ALWAYS">
                <opaqueInsets>
@@ -34,16 +35,29 @@
                   <Insets />
                </HBox.margin>
             </TextArea>
-            <Button fx:id="sendButton" defaultButton="true" disable="true" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#sendMessage" text="Enviar" HBox.hgrow="NEVER">
+            <Button fx:id="sendButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#sendMessage" HBox.hgrow="NEVER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/E:/IntelliJ%20Projects/Chat/Resources/arrow-pointing-right-in-a-circle.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button><!-- E:/IntelliJ Projects/Chat -->
+            <Button fx:id="recordButton" disable="true" mnemonicParsing="false" onAction="#startRecording">
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+               <graphic>
+                  <ImageView fx:id="recordImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/E:/IntelliJ%20Projects/Chat/Resources/microphone-black-shape.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </HBox>
@@ -65,8 +79,8 @@
          <children>
             <Label alignment="CENTER_RIGHT" text="IP do Servidor:" GridPane.halignment="RIGHT" />
             <Label alignment="CENTER_RIGHT" text="Porta do servidor:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-            <TextField fx:id="ipTextField" GridPane.columnIndex="1" />
-            <TextField fx:id="portTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="ipTextField" text="localhost" GridPane.columnIndex="1" />
+            <TextField fx:id="portTextField" text="8080" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="connectButton" mnemonicParsing="false" onAction="#startConnection" text="Conectar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP" />
          </children>
       </GridPane>

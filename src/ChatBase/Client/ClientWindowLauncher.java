@@ -1,4 +1,4 @@
-package ChatBase;
+package ChatBase.Client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,7 @@ public class ClientWindowLauncher extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("client.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Client.fxml"));
         window.setTitle("Cliente");
         window.setScene(new Scene(root, 600, 300));
         window.show();

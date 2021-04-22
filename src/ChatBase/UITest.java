@@ -13,7 +13,7 @@ public class UITest extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Server.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Server/Server.fxml"));
         window.setTitle("UI Test");
         window.setScene(new Scene(root, 600, 300));
         window.show();

@@ -1,15 +1,14 @@
 package ChatBase;
 
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class MessageReceiveHandler extends Thread {
     private final Socket socket;
     private final ChatWindowController controller;
 
-    MessageReceiveHandler(Socket socket, ChatWindowController controller) {
+    public MessageReceiveHandler(Socket socket, ChatWindowController controller) {
         this.socket = socket;
         this.controller = controller;
         start(); // will load the run method
@@ -17,20 +16,28 @@ public class MessageReceiveHandler extends Thread {
 
     public void run() {
         try {
-            //getting input stream and its reader, for reading request or acknowledgement
-            InputStream inputStream = socket.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             StringBuilder stringBuilder = new StringBuilder();
-            while(true){
-                int x = inputStreamReader.read();
-                while(x != Message.terminator || x == -1) {
-                    stringBuilder.append((char) x);
-                    x = inputStreamReader.read();
+            while(!interrupted()){
+                boolean isText = dataInputStream.readBoolean();
+                if(isText){
+                    int numChars = dataInputStream.readInt();
+                    for(int i = 0; i < numChars; i++){
+                        stringBuilder.append(dataInputStream.readChar());
+                    }
+                    String message = stringBuilder.toString();
+                    controller.receiveMessage(message);
+                    stringBuilder = new StringBuilder();
+                } else {
+                    int numBytes = dataInputStream.readInt();
+                    byte[] data = new byte[numBytes];
+                    int numReadBytes = dataInputStream.read(data, 0, numBytes);
+                    if (numReadBytes != numBytes) {
+                        System.out.println("Error: Number of bytes written is not equal to number of bytes read.");
+                    } else {
+                        controller.receiveMessage(data);
+                    }
                 }
-                String message = stringBuilder.toString();
-
-                controller.receiveMessage(message);
-                stringBuilder = new StringBuilder();
             }
         } catch(IOException e) {
             //e.printStackTrace();

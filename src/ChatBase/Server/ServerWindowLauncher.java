@@ -1,4 +1,4 @@
-package ChatBase;
+package ChatBase.Server;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,7 @@ public class ServerWindowLauncher extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("server.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Server.fxml"));
         window.setTitle("Servidor");
         window.setScene(new Scene(root, 600, 300));
         window.show();

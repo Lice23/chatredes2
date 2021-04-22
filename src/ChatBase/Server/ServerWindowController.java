@@ -1,5 +1,8 @@
-package ChatBase;
+package ChatBase.Server;
 
+import ChatBase.Audio;
+import ChatBase.AudioMessage;
+import ChatBase.ChatWindowController;
 import javafx.event.ActionEvent;
 
 public class ServerWindowController extends ChatWindowController {
@@ -11,6 +14,7 @@ public class ServerWindowController extends ChatWindowController {
         if(port == -1) return;
         server = new Server(port, this);
         disableChat(false);
+        audio = new Audio();
     }
 
     @Override
@@ -22,7 +26,12 @@ public class ServerWindowController extends ChatWindowController {
     @Override
     public void sendMessage(ActionEvent actionEvent) {
         if(!isMessageValid(chatTextArea.getText())) return;
-        server.sendMessage(chatTextArea.getText());
+        server.sendTextMessage(chatTextArea.getText());
         addMessageToListView(chatTextArea.getText(), true);
+    }
+
+    @Override
+    public void sendAudioMessage(AudioMessage audioMessage) {
+        server.sendAudioMessage(audioMessage.data, audioMessage.data.length);
     }
 }

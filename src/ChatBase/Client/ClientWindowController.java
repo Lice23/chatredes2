@@ -1,5 +1,8 @@
-package ChatBase;
+package ChatBase.Client;
 
+import ChatBase.Audio;
+import ChatBase.AudioMessage;
+import ChatBase.ChatWindowController;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
@@ -15,6 +18,7 @@ public class ClientWindowController extends ChatWindowController {
         try{
             client.initialize();
             disableChat(false);
+            audio = new Audio();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -30,7 +34,12 @@ public class ClientWindowController extends ChatWindowController {
     @Override
     public void sendMessage(ActionEvent actionEvent) {
         if(!isMessageValid(chatTextArea.getText())) return;
-        client.sendMessage(chatTextArea.getText());
+        client.sendTextMessage(chatTextArea.getText());
         addMessageToListView(chatTextArea.getText(), true);
+    }
+
+    @Override
+    public void sendAudioMessage(AudioMessage audioMessage) {
+        client.sendAudioMessage(audioMessage.data, audioMessage.data.length);
     }
 }
