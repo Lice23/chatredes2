@@ -11,7 +11,7 @@ public class MessageReceiveHandler extends Thread {
     public MessageReceiveHandler(Socket socket, ChatWindowController controller) {
         this.socket = socket;
         this.controller = controller;
-        start(); // will load the run method
+        start();
     }
 
     public void run() {

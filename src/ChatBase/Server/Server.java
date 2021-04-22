@@ -1,7 +1,6 @@
 package ChatBase.Server;
 
 import ChatBase.MessageReceiveHandler;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,17 +9,15 @@ import java.net.Socket;
 class Server extends Thread {
     private ServerSocket serverSocket;
     private Socket acceptedSocket;
-    public final int port;
     private final ServerWindowController controller;
     private DataOutputStream dataOutputStream;
     private MessageReceiveHandler messageReceiveHandler;
 
     Server(int port, ServerWindowController controller) {
-        this.port = port;
         this.controller = controller;
+
         try {
-            //Initiating ServerSocket with TCP port
-            serverSocket = new ServerSocket(this.port);
+            serverSocket = new ServerSocket(port);
             start();
         } catch(Exception e) {
             e.printStackTrace();
@@ -33,6 +30,7 @@ class Server extends Thread {
             acceptedSocket = serverSocket.accept();
             messageReceiveHandler = new MessageReceiveHandler(acceptedSocket, controller);
             dataOutputStream = new DataOutputStream(acceptedSocket.getOutputStream());
+            controller.enableChatWithMessage();
         } catch(IOException e) {
             e.printStackTrace();
         }

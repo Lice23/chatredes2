@@ -3,9 +3,8 @@ package ChatBase.Client;
 import ChatBase.Audio;
 import ChatBase.AudioMessage;
 import ChatBase.ChatWindowController;
+import ChatBase.Message;
 import javafx.event.ActionEvent;
-
-import java.io.IOException;
 
 public class ClientWindowController extends ChatWindowController {
     private Client client;
@@ -14,21 +13,17 @@ public class ClientWindowController extends ChatWindowController {
     public void startConnection(ActionEvent event){
         int port = validatePort(portTextField.getText());
         if(port == -1) return;
+
         client = new Client(ipTextField.getText(), port, this);
-        try{
-            client.initialize();
-            disableChat(false);
-            audio = new Audio();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+        enableChatWithMessage();
+        audio = new Audio();
     }
 
     @Override
     public void endConnection(ActionEvent actionEvent) {
+        client.sendTextMessage(Message.clientDisconnected);
         client.endConnection();
-        disableChat(true);
+        disableChatWithMessage();
     }
 
     @Override

@@ -23,9 +23,8 @@ public abstract class ChatWindowController {
     public Button connectButton;
     public Button endButton;
     public Audio audio;
-    public final String stopImageUrl = "file:/E:/IntelliJ%20Projects/Chat/Resources/rounded-black-square-shape.png";
-    public final String recordImageUrl = "file:/E:/IntelliJ%20Projects/Chat/Resources/microphone-black-shape.png";
-    public final String playImageUrl = "file:/E:/IntelliJ%20Projects/Chat/Resources/play-button.png";
+    private final String stopImageUrl = "file:/E:/IntelliJ%20Projects/Chat/Resources/rounded-black-square-shape.png";
+    private final String recordImageUrl = "file:/E:/IntelliJ%20Projects/Chat/Resources/microphone-black-shape.png";
     protected LinkedList<AudioMessage> audioMessages = new LinkedList<>();
 
     public abstract void startConnection(ActionEvent actionEvent);
@@ -45,7 +44,7 @@ public abstract class ChatWindowController {
 
     public void startRecording(ActionEvent actionEvent) {
         if (!audio.isRecording) {
-            audio.captureAudio();
+            audio.recordAudio();
             Platform.runLater(() -> {
                 recordImage.setImage(new Image(stopImageUrl));
             });
@@ -63,7 +62,12 @@ public abstract class ChatWindowController {
     }
 
     public void receiveMessage(String msg){
-        addMessageToListView(msg, false);
+        if(msg.equals(Message.clientDisconnected) || msg.equals(Message.serverDisconnected)){
+            addMessageToListView(msg);
+            disableFromDisconnect();
+        } else {
+            addMessageToListView(msg, false);
+        }
     }
 
     public void receiveMessage(byte[] data){
@@ -98,32 +102,25 @@ public abstract class ChatWindowController {
 
     public void addAudioMessageToListView(AudioMessage audioMessage, boolean you){
         String text = you ? Message.sentPrefix : Message.receivedPrefix;
+        text = text.substring(0, text.length()-2);
         ButtonLineListener audioMessageButton = new ButtonLineListener(text, audio, audioMessage);
-        /*Button audioMessageButton = new Button(text);
-        ImageView buttonImg = new ImageView(new Image(playImageUrl));
-        buttonImg.setFitHeight(16);
-        buttonImg.setFitWidth(16);
-        audioMessageButton.setGraphic(buttonImg);
-        audioMessageButton.setOnAction(e -> {
-            if(audioMessage.isPlaying){
-                audioMessage.setPlaying(false);
-                Platform.runLater(() -> {
-                    buttonImg.setImage(new Image(playImageUrl));
-                });
-            } else {
-                audioMessage.playAudio(audio.sourceDataLine);
-                Platform.runLater(() -> {
-                    buttonImg.setImage(new Image(stopImageUrl));
-                });
-            }
-        });*/
-
         Platform.runLater(() -> {
             chatListView.getItems().add(audioMessageButton);
         });
     }
 
-    public void disableChat(boolean disable){
+    public void disableFromDisconnect(){
+        chatTextArea.setDisable(true);
+        sendButton.setDisable(true);
+        recordButton.setDisable(true);
+        endButton.setDisable(false);
+
+        if(ipTextField != null) ipTextField.setDisable(true);
+        portTextField.setDisable(true);
+        connectButton.setDisable(true);
+    }
+
+    public void disableChat(boolean disable) {
         chatTextArea.setDisable(disable);
         sendButton.setDisable(disable);
         recordButton.setDisable(disable);
@@ -132,15 +129,20 @@ public abstract class ChatWindowController {
         if(ipTextField != null) ipTextField.setDisable(!disable);
         portTextField.setDisable(!disable);
         connectButton.setDisable(!disable);
+    }
 
-        if(disable){
-            addMessageToListView("Desconectado");
-        } else {
-            addMessageToListView("Conectado");
-        }
+    public void enableChatWithMessage(){
+        disableChat(false);
+        addMessageToListView("Conectado");
+    }
+
+    public void disableChatWithMessage(){
+        disableFromDisconnect();
+        endButton.setDisable(true);
+        addMessageToListView("Desconectado. Reinicie o chat para começar de novo.");
     }
 
     public boolean isMessageValid(String msg){
-        return !msg.isBlank() && !msg.isEmpty();// && !msg.contains("#");
+        return !msg.isBlank() && !msg.isEmpty();
     }
 }

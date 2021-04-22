@@ -15,8 +15,6 @@ public class ButtonLineListener extends Button implements LineListener {
 
     ButtonLineListener(String text, Audio audio, AudioMessage audioMessage){
         this.setText(text);
-        this.audio = audio;
-        this.audioMessage = audioMessage;
         buttonImage = new ImageView(new Image(playImageUrl));
         buttonImage.setFitHeight(16);
         buttonImage.setFitWidth(16);

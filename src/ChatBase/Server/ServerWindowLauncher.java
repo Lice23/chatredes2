@@ -15,7 +15,7 @@ public class ServerWindowLauncher extends Application {
     public void start(Stage window) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Server.fxml"));
         window.setTitle("Servidor");
-        window.setScene(new Scene(root, 600, 300));
+        window.setScene(new Scene(root, 1280, 720));
         window.show();
     }
 }

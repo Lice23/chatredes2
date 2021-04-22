@@ -15,7 +15,7 @@ public class ClientWindowLauncher extends Application {
     public void start(Stage window) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Client.fxml"));
         window.setTitle("Cliente");
-        window.setScene(new Scene(root, 600, 300));
+        window.setScene(new Scene(root, 1280, 720));
         window.show();
     }
 }
